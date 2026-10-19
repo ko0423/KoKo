@@ -1,11 +1,170 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>我的第一個網頁</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人簡歷 | Portfolio</title>
+    <style>
+        /* 全局設定 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #fcfcfc; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        /* 導覽列 */
+        nav { background-color: #ffffff; width: 90%; max-width: 1000px; margin-top: 20px; padding: 15px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 20px; z-index: 100; }
+        .nav-logo { font-weight: bold; color: #7c3aed; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { text-decoration: none; color: #555; font-size: 14px; font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #7c3aed; }
+
+        /* 個人資訊 */
+        .profile-container { margin-top: 80px; background-color: #ffffff; width: 90%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 50px 40px; text-align: center; transition: transform 0.3s ease; }
+        .profile-container:hover { transform: translateY(-5px); }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #f0e6ff; margin-bottom: 20px; }
+        .name { font-size: 32px; font-weight: bold; color: #111; margin-bottom: 5px; display: inline-block; position: relative; }
+        .name::after { content: ""; position: absolute; width: 40%; height: 4px; background-color: #7c3aed; bottom: -5px; left: 30%; border-radius: 2px; }
+        .eng-name { font-size: 12px; color: #888; letter-spacing: 3px; margin-top: 15px; margin-bottom: 15px; }
+        .major { font-size: 15px; color: #666; margin-bottom: 30px; }
+        
+        /* 技能標籤 */
+        .skills { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+        .skill-tag { background-color: #f7f3ff; color: #7c3aed; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
+        .contact-info { font-size: 14px; color: #555; text-decoration: none; transition: color 0.3s; }
+        .contact-info:hover { color: #7c3aed; }
+
+        /* 專案區塊 */
+        .projects-section { margin-top: 40px; margin-bottom: 80px; width: 90%; max-width: 800px; display: flex; flex-direction: column; gap: 25px; }
+        .section-title { font-size: 24px; font-weight: bold; color: #111; margin-bottom: 10px; padding-left: 15px; border-left: 4px solid #7c3aed; align-self: flex-start; }
+        .project-card { background-color: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 40px; text-align: left; }
+        .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .project-title { font-size: 20px; font-weight: bold; color: #7c3aed; }
+        .project-role { font-size: 14px; color: #888; }
+        .project-desc { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 20px; }
+
+        /* 專案亮點圖文 */
+        .feature-item { display: flex; align-items: stretch; gap: 40px; margin-top: 35px; padding-top: 35px; border-top: 1px dashed #eaeaea; }
+        .feature-item:nth-child(even) { flex-direction: row-reverse; }
+        .feature-img-container { flex: 1.2; display: flex; align-items: center; min-width: 0; }
+        .feature-img { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid #f0f0f0; cursor: zoom-in; }
+        .feature-text-content { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+        .feature-subtitle { font-size: 18px; font-weight: bold; color: #222; margin-bottom: 10px; }
+        .feature-desc { font-size: 15px; color: #555; line-height: 1.6; }
+
+        /* 按鈕 */
+        .btn-primary { display: inline-block; margin-top: 40px; padding: 12px 25px; background-color: #7c3aed; color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 14px; transition: all 0.3s ease; text-align: center; width: 100%; }
+        .btn-primary:hover { background-color: #6d28d9; }
+
+        /* Lightbox */
+        .lightbox-modal { display: none; position: fixed; z-index: 999; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
+        .lightbox-content { margin: auto; display: block; max-width: 90%; max-height: 85vh; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+
+        /* RWD */
+        @media (max-width: 768px) {
+            .feature-item, .feature-item:nth-child(even) { flex-direction: column; gap: 20px; }
+            .feature-img-container, .feature-text-content { width: 100%; flex: none; }
+        }
+    </style>
 </head>
 <body>
-  <h1>Hello World！</h1>
-  <p>這是我在 GitHub 上成功部署的靜態網頁。</p>
+
+    <nav>
+        <div class="nav-logo">PORTFOLIO</div>
+        <div class="nav-links">
+            <a href="#">首頁</a>
+            <a href="#">簡介</a>
+            <a href="#">專案</a>
+            <a href="#">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <!-- 照片 -->
+        <img src="img.png" alt="大頭貼" class="avatar">
+        <h1 class="name">柯樂</h1>
+        <p class="eng-name">LE KO</p>
+        <p class="major">國立聯合大學・資訊管理學系</p>
+        <div class="skills">
+            <span class="skill-tag">PHP 後端開發</span>
+            <span class="skill-tag">C++ 程式設計</span>
+            <span class="skill-tag">SQL 資料庫管理</span>
+        </div>
+        <a href="mailto:kole0423@gmail.com" class="contact-info">kole0423@gmail.com</a>
+    </div>
+
+    <div class="projects-section">
+        <h2 class="section-title">專案經歷</h2>
+
+        <div class="project-card">
+            <div class="project-header">
+                <h3 class="project-title">愛分享系統 - 校園住宿共享平台</h3>
+                <span class="project-role">系統分析 / 前後端整合開發</span>
+            </div>
+            <p class="project-desc">
+                使用 PHP 與 MySQL 建構的數位化租屋媒合平台。專案將租屋條件與歷屆評價進行資料結構化，提供使用者客觀的決策依據。
+            </p>
+            <div class="skills" style="margin-bottom: 20px; justify-content: flex-start;">
+                <span class="skill-tag">PHP</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">系統分析</span>
+                <span class="skill-tag">API 串接</span>
+            </div>
+
+            <!-- 核心亮點 1 -->
+            <div class="feature-item">
+                <div class="feature-img-container">
+                    <img src="feature1.png" alt="Smart ROC 適配度演算法" class="feature-img">
+                </div>
+                <div class="feature-text-content">
+                    <h4 class="feature-subtitle">1. 實作適配度演算法</h4>
+                    <p class="feature-desc">將使用者對租金、交通、安全等偏好條件轉換為動態權重，透過後端計算各房源的適配百分比，並以雷達圖呈現運算結果。</p>
+                </div>
+            </div>
+
+            <!-- 核心亮點 2 -->
+            <div class="feature-item">
+                <div class="feature-img-container">
+                    <img src="feature2.png" alt="Google Maps API 整合" class="feature-img">
+                </div>
+                <div class="feature-text-content">
+                    <h4 class="feature-subtitle">2. 串接 Google Maps API</h4>
+                    <p class="feature-desc">於房源詳細頁面介接 Google Maps 服務，標示座標並輸出周邊超商、車站等生活機能之地標距離，提供視覺化地理資訊。</p>
+                </div>
+            </div>
+
+            <!-- 核心亮點 3 -->
+            <div class="feature-item">
+                <div class="feature-img-container">
+                    <img src="feature3.png" alt="評價與資料綁定" class="feature-img">
+                </div>
+                <div class="feature-text-content">
+                    <h4 class="feature-subtitle">3. 評價紀錄與資料庫綁定</h4>
+                    <p class="feature-desc">設計租客評價與續租意願表單。將居住經驗（評分、文字回饋）寫入資料庫並與對應房源建立關聯，作為系統查詢的歷史依據。</p>
+                </div>
+            </div>
+
+            <a href="project.html" class="btn-primary">查看完整架構與後端實作</a>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="imageModal" class="lightbox-modal">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="expandedImg">
+    </div>
+
+    <script>
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("expandedImg");
+        var imgs = document.getElementsByClassName("feature-img");
+        for (var i = 0; i < imgs.length; i++) {
+            imgs[i].onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
+        }
+        function closeLightbox() { modal.style.display = "none"; }
+        modal.onclick = function(event) { if (event.target == modal) { closeLightbox(); } }
+    </script>
+
 </body>
 </html>

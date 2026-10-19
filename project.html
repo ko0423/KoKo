@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛分享系統 - 專案報告 | Portfolio</title>
+    <style>
+        /* 全局設定 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #fcfcfc; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        /* 導覽列 */
+        nav { background-color: #ffffff; width: 90%; max-width: 1000px; margin-top: 20px; padding: 15px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 20px; z-index: 100; }
+        .nav-logo { font-weight: bold; color: #7c3aed; letter-spacing: 2px; }
+        .nav-links a { text-decoration: none; color: #555; font-size: 14px; font-weight: 500; margin-left: 20px; transition: color 0.3s; }
+        .nav-links a:hover { color: #7c3aed; }
+
+        /* 報告書區塊 */
+        .report-container { margin-top: 50px; margin-bottom: 80px; background-color: #ffffff; width: 90%; max-width: 900px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 50px; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #7c3aed; text-decoration: none; font-weight: bold; font-size: 15px; }
+        .report-title { font-size: 28px; font-weight: bold; color: #111; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
+        .report-desc { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 40px; }
+
+        /* 圖表與技術說明 */
+        .diagram-section { margin-bottom: 50px; padding-bottom: 30px; border-bottom: 1px dashed #eaeaea; }
+        .diagram-section:last-child { border-bottom: none; }
+        .diagram-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 10px; border-left: 4px solid #333; padding-left: 10px; }
+        .diagram-img { width: 100%; border-radius: 8px; border: 1px solid #eaeaea; cursor: zoom-in; margin-top: 15px; }
+        .diagram-caption { text-align: center; font-size: 14px; color: #888; margin-top: 10px; margin-bottom: 15px; }
+        .tech-desc { font-size: 15px; color: #444; line-height: 1.6; }
+
+        /* Lightbox */
+        .lightbox-modal { display: none; position: fixed; z-index: 999; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
+        .lightbox-content { margin: auto; display: block; max-width: 90%; max-height: 85vh; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">PORTFOLIO</div>
+        <div class="nav-links">
+            <a href="index.html">返回首頁</a>
+            <a href="#">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="report-container">
+        <a href="index.html" class="back-link">← 返回簡歷</a>
+        
+        <h1 class="report-title">專案系統分析與後端實作</h1>
+        <p class="report-desc">
+            系統開發涵蓋需求分析、流程設計至後端實作。以下為專案前期的架構規劃，以及後端資料庫跨表查詢與後台管理介面之實際開發成果。
+        </p>
+
+        <div class="diagram-section">
+            <h2 class="diagram-title">1. 系統流程圖</h2>
+            <p class="tech-desc">定義使用者註冊、房源上架、租屋申請至審核之完整操作資料流。</p>
+            <img src="flowchart.png" alt="系統流程圖" class="diagram-img">
+            <p class="diagram-caption">圖一：運作流程圖</p>
+        </div>
+
+        <div class="diagram-section">
+            <h2 class="diagram-title">2. 使用案例圖</h2>
+            <p class="tech-desc">界定管理員、租客與房源提供者之角色權限範圍，作為後續資料庫關聯設計之基礎。</p>
+            <img src="usecase.png" alt="使用案例圖" class="diagram-img">
+            <p class="diagram-caption">圖二：UML 使用案例圖</p>
+        </div>
+
+        <div class="diagram-section">
+            <h2 class="diagram-title">3. 後端資料庫整合實作</h2>
+            <p class="tech-desc" style="margin-bottom: 20px;">展示跨模組資料查詢與權限控管之開發項目。</p>
+            
+            <p class="tech-desc"><strong>歷史紀錄顯示：</strong>透過 PHP 與 MySQL，整合「食」、「衣」、「住」、「行」、「物」等五個獨立模組之資料表。使用 SQL 查詢將跨表資料依時間軸排序，輸出使用者操作紀錄。</p>
+            <img src="records.png" alt="跨模組歷史紀錄整合" class="diagram-img">
+            <p class="diagram-caption">圖三：歷史紀錄顯示 (跨表查詢實作)</p>
+
+            <p class="tech-desc" style="margin-top: 30px;"><strong>管理員後台介面：</strong>實作角色權限控制，提供會員數據統計與帳號管理。完成針對帳號資料之 CRUD (新增、讀取、更新、刪除) 功能撰寫。</p>
+            <img src="admin.png" alt="管理員後台" class="diagram-img">
+            <p class="diagram-caption">圖四：管理員後台儀表板 (資料庫 CRUD 操作)</p>
+        </div>
+
+    </div>
+
+    <!-- Lightbox -->
+    <div id="imageModal" class="lightbox-modal">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="expandedImg">
+    </div>
+
+    <script>
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("expandedImg");
+        var imgs = document.getElementsByClassName("diagram-img");
+        for (var i = 0; i < imgs.length; i++) {
+            imgs[i].onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
+        }
+        function closeLightbox() { modal.style.display = "none"; }
+        modal.onclick = function(event) { if (event.target == modal) { closeLightbox(); } }
+    </script>
+
+</body>
+</html>
