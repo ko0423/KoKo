@@ -7,6 +7,7 @@
     <style>
         /* 全局設定 */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        html { scroll-behavior: smooth; } /* 加入平滑滾動效果 */
         body { background-color: #fcfcfc; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
         /* 導覽列 */
@@ -19,7 +20,7 @@
         /* 個人資訊 */
         .profile-container { margin-top: 80px; background-color: #ffffff; width: 90%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 50px 40px; text-align: center; transition: transform 0.3s ease; }
         .profile-container:hover { transform: translateY(-5px); }
-        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #f0e6ff; margin-bottom: 20px; }
+        .avatar { display: block; margin: 0 auto 20px; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #f0e6ff; }
         .name { font-size: 32px; font-weight: bold; color: #111; margin-bottom: 5px; display: inline-block; position: relative; }
         .name::after { content: ""; position: absolute; width: 40%; height: 4px; background-color: #7c3aed; bottom: -5px; left: 30%; border-radius: 2px; }
         .eng-name { font-size: 12px; color: #888; letter-spacing: 3px; margin-top: 15px; margin-bottom: 15px; }
@@ -28,12 +29,31 @@
         /* 技能標籤 */
         .skills { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
         .skill-tag { background-color: #f7f3ff; color: #7c3aed; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
-        .contact-info { font-size: 14px; color: #555; text-decoration: none; transition: color 0.3s; }
-        .contact-info:hover { color: #7c3aed; }
+        
+        /* 聯絡資訊與社群連結區塊 */
+        .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .contact-item { font-size: 14px; color: #555; text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 6px; border: 1px solid #eaeaea; padding: 8px 18px; border-radius: 20px; background-color: #fafafa; font-weight: 500; }
+        .contact-item:hover { color: #7c3aed; border-color: #7c3aed; background-color: #f7f3ff; }
+
+        /* --- 基本資料與經歷區塊 --- */
+        .resume-section { margin-top: 40px; width: 90%; max-width: 800px; display: flex; flex-direction: column; gap: 25px; }
+        .resume-card { background-color: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 35px 40px; text-align: left; }
+        .resume-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px dashed #eaeaea; }
+        .resume-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .resume-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+        .resume-title { font-size: 18px; font-weight: bold; color: #222; }
+        .resume-date { font-size: 14px; color: #7c3aed; font-weight: 600; }
+        .resume-org { font-size: 15px; color: #555; font-weight: 500; margin-bottom: 12px; }
+        .resume-desc { font-size: 14.5px; color: #666; line-height: 1.6; margin-bottom: 8px; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .skill-badge { background-color: #f0f4f8; color: #475569; padding: 6px 14px; border-radius: 6px; font-size: 13px; border: 1px solid #e2e8f0; }
 
         /* 專案區塊 */
         .projects-section { margin-top: 40px; margin-bottom: 80px; width: 90%; max-width: 800px; display: flex; flex-direction: column; gap: 25px; }
-        .section-title { font-size: 24px; font-weight: bold; color: #111; margin-bottom: 10px; padding-left: 15px; border-left: 4px solid #7c3aed; align-self: flex-start; }
+        
+        /* 區塊標題 */
+        .section-title { font-size: 24px; font-weight: bold; color: #111; margin-bottom: 10px; padding-left: 15px; border-left: 4px solid #7c3aed; align-self: flex-start; scroll-margin-top: 100px; }
+        
         .project-card { background-color: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 40px; text-align: left; }
         .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .project-title { font-size: 20px; font-weight: bold; color: #7c3aed; }
@@ -49,9 +69,15 @@
         .feature-subtitle { font-size: 18px; font-weight: bold; color: #222; margin-bottom: 10px; }
         .feature-desc { font-size: 15px; color: #555; line-height: 1.6; }
 
-        /* 按鈕 */
-        .btn-primary { display: inline-block; margin-top: 40px; padding: 12px 25px; background-color: #7c3aed; color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 14px; transition: all 0.3s ease; text-align: center; width: 100%; }
+        /* 按鈕區塊設定 */
+        .btn-group { display: flex; gap: 15px; margin-top: 40px; }
+        
+        .btn-primary { flex: 1; display: inline-block; padding: 12px 25px; background-color: #7c3aed; color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 14px; transition: all 0.3s ease; text-align: center; }
         .btn-primary:hover { background-color: #6d28d9; }
+        
+        /* 次要按鈕樣式 */
+        .btn-secondary { flex: 1; display: inline-block; padding: 12px 25px; background-color: transparent; color: #7c3aed; border: 2px solid #7c3aed; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 14px; transition: all 0.3s ease; text-align: center; }
+        .btn-secondary:hover { background-color: #f7f3ff; }
 
         /* Lightbox */
         .lightbox-modal { display: none; position: fixed; z-index: 999; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
@@ -62,6 +88,7 @@
         @media (max-width: 768px) {
             .feature-item, .feature-item:nth-child(even) { flex-direction: column; gap: 20px; }
             .feature-img-container, .feature-text-content { width: 100%; flex: none; }
+            .btn-group { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
@@ -71,9 +98,10 @@
         <div class="nav-logo">PORTFOLIO</div>
         <div class="nav-links">
             <a href="#">首頁</a>
-            <a href="#">簡介</a>
-            <a href="#">專案</a>
-            <a href="#">GitHub</a>
+            <a href="#education">學歷與證照</a>
+            <a href="#experience">實務經歷</a>
+            <a href="#projects">專案</a>
+            <a href="https://github.com/ko0423" target="_blank">GitHub</a>
         </div>
     </nav>
 
@@ -88,11 +116,69 @@
             <span class="skill-tag">C++ 程式設計</span>
             <span class="skill-tag">SQL 資料庫管理</span>
         </div>
-        <a href="mailto:kole0423@gmail.com" class="contact-info">kole0423@gmail.com</a>
+        
+        <!-- 社群與聯絡資訊區塊 -->
+        <div class="contact-links">
+            <a href="mailto:kole0423@gmail.com" class="contact-item">📧 Email</a>
+            <a href="https://github.com/ko0423" target="_blank" class="contact-item">💻 GitHub</a>
+            <!-- LinkedIn 按鈕已隱藏 -->
+            <!-- <a href="這裡貼上你的LinkedIn網址" target="_blank" class="contact-item">💼 LinkedIn</a> -->
+        </div>
     </div>
 
+    <!-- 經歷與學歷區塊 -->
+    <div class="resume-section">
+        
+        <!-- 教育背景與證照 -->
+        <h2 class="section-title" id="education">學歷與證照</h2>
+        <div class="resume-card">
+            <div class="resume-item">
+                <div class="resume-header">
+                    <h3 class="resume-title">資訊管理學系 學士</h3>
+                    <span class="resume-date">2023.09 - 2027.06</span>
+                </div>
+                <div class="resume-org">國立聯合大學</div>
+                <p class="resume-desc">核心修課包含系統分析、物件導向程式設計及軟體專案管理。語言與工具包含 C++、Java、Python、PHP、HTML/CSS 與 MySQL。</p>
+            </div>
+            
+            <div class="resume-item">
+                <div class="resume-header">
+                    <h3 class="resume-title">專業證照與資格</h3>
+                </div>
+                <div class="skills-grid">
+                    <span class="skill-badge">ICDL Cyber Security 資安認證</span>
+                    <span class="skill-badge">丙級游泳教練證</span>
+                    <span class="skill-badge">水協救生員與BLS證照</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 課外與實務經歷 -->
+        <h2 class="section-title" id="experience">實務經歷</h2>
+        <div class="resume-card">
+            
+            <div class="resume-item">
+                <div class="resume-header">
+                    <h3 class="resume-title">資訊管理系學會 活動組幹部</h3>
+                    <span class="resume-date">2025.09 - 2026.06</span>
+                </div>
+                <p class="resume-desc">負責近百人規模活動的企劃與執行。工作內容包含將活動需求拆解為時程表，追蹤各組任務進度，並處理校方行政流程與場地借用，確保活動依時程推進。</p>
+            </div>
+
+            <div class="resume-item">
+                <div class="resume-header">
+                    <h3 class="resume-title">聯合大學游泳隊 隊員</h3>
+                    <span class="resume-date">2023.09 - 2024.06</span>
+                </div>
+                <p class="resume-desc">配合每週固定團練與教練課表，執行體能與技術訓練。將長期訓練培養出的耐心與專注力，應用於程式開發中的反覆除錯與新技術摸索。</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 專案區塊 -->
     <div class="projects-section">
-        <h2 class="section-title">專案經歷</h2>
+        <h2 class="section-title" id="projects">專案</h2>
 
         <div class="project-card">
             <div class="project-header">
@@ -109,7 +195,6 @@
                 <span class="skill-tag">API 串接</span>
             </div>
 
-            <!-- 核心亮點 1 -->
             <div class="feature-item">
                 <div class="feature-img-container">
                     <img src="feature1.png" alt="Smart ROC 適配度演算法" class="feature-img">
@@ -120,7 +205,6 @@
                 </div>
             </div>
 
-            <!-- 核心亮點 2 -->
             <div class="feature-item">
                 <div class="feature-img-container">
                     <img src="feature2.png" alt="Google Maps API 整合" class="feature-img">
@@ -131,19 +215,39 @@
                 </div>
             </div>
 
-            <!-- 核心亮點 3 -->
             <div class="feature-item">
                 <div class="feature-img-container">
                     <img src="feature3.png" alt="評價與資料綁定" class="feature-img">
                 </div>
                 <div class="feature-text-content">
                     <h4 class="feature-subtitle">3. 評價紀錄與資料庫綁定</h4>
-                    <p class="feature-desc">設計租客評價與續租意願表單。將居住經驗（評分、文字回饋）寫入資料庫並與對應房源建立關聯，作為系統查詢的歷史依據。</p>
+                    <p class="feature-desc">設計租客評價與續租意願表單。將居住經驗寫入資料庫並與對應房源建立關聯，作為系統查詢的歷史依據。</p>
                 </div>
             </div>
 
-            <a href="project.html" class="btn-primary">查看完整架構與後端實作</a>
+            <!-- 雙按鈕區塊 -->
+            <div class="btn-group">
+                <a href="https://github.com/ko0423/php-housing-match-core" target="_blank" class="btn-primary">查看 GitHub 核心模組</a>
+                <a href="project.html" class="btn-secondary">查看系統架構與文件</a>
+            </div>
         </div>
+
+        <div class="project-card" style="margin-top: 25px;">
+            <div class="project-header">
+                <h3 class="project-title">物件導向 RPG 戰鬥模擬器</h3>
+                <span class="project-role">核心邏輯開發</span>
+            </div>
+            <p class="project-desc" style="margin-bottom: 0;">
+                使用 C++Builder 開發 RPG 戰鬥模擬器。實作類別繼承、多型與物件組合來設計角色與技能架構，並透過 VCL Timer 元件控制非同步的遊戲迴圈與戰鬥運算。
+            </p>
+            <div class="skills" style="margin-top: 20px; margin-bottom: 0; justify-content: flex-start;">
+                <span class="skill-tag">C++</span>
+                <span class="skill-tag">OOP</span>
+                <span class="skill-tag">VCL 元件</span>
+            </div>
+            <a href="https://github.com/ko0423/cpp-rpg-simulator" target="_blank" class="btn-primary" style="margin-top: 20px;">查看 GitHub 專案與展示</a>
+        </div>
+
     </div>
 
     <!-- Lightbox -->
