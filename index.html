@@ -20,7 +20,19 @@
         /* 個人資訊 */
         .profile-container { margin-top: 80px; background-color: #ffffff; width: 90%; max-width: 600px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 50px 40px; text-align: center; transition: transform 0.3s ease; }
         .profile-container:hover { transform: translateY(-5px); }
-        .avatar { display: block; margin: 0 auto 20px; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #f0e6ff; }
+        
+        /* 大頭貼精準微調：使用小畫家吸取的完美色碼，並保留 120px 大小 */
+        .avatar { 
+            display: block; 
+            margin: 0 auto 20px; 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            object-fit: contain; 
+            background-color: #dbdadf;
+            border: 3px solid #f0e6ff; 
+        }
+        
         .name { font-size: 32px; font-weight: bold; color: #111; margin-bottom: 5px; display: inline-block; position: relative; }
         .name::after { content: ""; position: absolute; width: 40%; height: 4px; background-color: #7c3aed; bottom: -5px; left: 30%; border-radius: 2px; }
         .eng-name { font-size: 12px; color: #888; letter-spacing: 3px; margin-top: 15px; margin-bottom: 15px; }
@@ -30,10 +42,10 @@
         .skills { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
         .skill-tag { background-color: #f7f3ff; color: #7c3aed; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
         
-        /* 聯絡資訊與社群連結區塊 */
-        .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
-        .contact-item { font-size: 14px; color: #555; text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 6px; border: 1px solid #eaeaea; padding: 8px 18px; border-radius: 20px; background-color: #fafafa; font-weight: 500; }
-        .contact-item:hover { color: #7c3aed; border-color: #7c3aed; background-color: #f7f3ff; }
+        /* 聯絡資訊極簡化 */
+        .contact-links { display: flex; justify-content: center; margin-top: 10px; }
+        .email-text { font-size: 15px; color: #666; text-decoration: none; transition: color 0.3s ease; letter-spacing: 1px; font-weight: 500; }
+        .email-text:hover { color: #7c3aed; }
 
         /* --- 基本資料與經歷區塊 --- */
         .resume-section { margin-top: 40px; width: 90%; max-width: 800px; display: flex; flex-direction: column; gap: 25px; }
@@ -112,17 +124,14 @@
         <p class="eng-name">LE KO</p>
         <p class="major">國立聯合大學・資訊管理學系</p>
         <div class="skills">
-            <span class="skill-tag">PHP 後端開發</span>
-            <span class="skill-tag">C++ 程式設計</span>
-            <span class="skill-tag">SQL 資料庫管理</span>
+            <span class="skill-tag">前後端整合開發</span>
+            <span class="skill-tag">AI 應用</span>
+            <span class="skill-tag">資料庫設計與管理</span>
         </div>
         
-        <!-- 社群與聯絡資訊區塊 -->
+        <!-- 社群與聯絡資訊區塊改為純 Email -->
         <div class="contact-links">
-            <a href="mailto:kole0423@gmail.com" class="contact-item">📧 Email</a>
-            <a href="https://github.com/ko0423" target="_blank" class="contact-item">💻 GitHub</a>
-            <!-- LinkedIn 按鈕已隱藏 -->
-            <!-- <a href="這裡貼上你的LinkedIn網址" target="_blank" class="contact-item">💼 LinkedIn</a> -->
+            <a href="mailto:kole0423@gmail.com" class="email-text">kole0423@gmail.com</a>
         </div>
     </div>
 
@@ -170,7 +179,7 @@
                     <h3 class="resume-title">聯合大學游泳隊 隊員</h3>
                     <span class="resume-date">2023.09 - 2024.06</span>
                 </div>
-                <p class="resume-desc">配合每週固定團練與教練課表，執行體能與技術訓練。將長期訓練培養出的耐心與專注力，應用於程式開發中的反覆除錯與新技術摸索。</p>
+                <p class="resume-desc">配合每週固定團練與教練課表，執行體能與技術訓練。長期訓練培養出耐心與專注力，反覆除錯與新技術摸索。</p>
             </div>
 
         </div>
@@ -225,7 +234,7 @@
                 </div>
             </div>
 
-            <!-- 雙按鈕區塊 -->
+            <!-- 雙按鈕區塊 (原程式碼保留) -->
             <div class="btn-group">
                 <a href="https://github.com/ko0423/php-housing-match-core" target="_blank" class="btn-primary">查看 GitHub 核心模組</a>
                 <a href="project.html" class="btn-secondary">查看系統架構與文件</a>
